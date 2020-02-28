@@ -1,0 +1,27 @@
+version: '3.5'
+
+services:
+  tmpsshserver:
+    image: rwd1/tmpsshserver
+    volumes:
+      - /root/.ssh/authorized_keys:/workdir/authorized_keys:ro
+    ports:
+      - "23:22"
+    networks:
+      - backend
+    environment:
+      LIFETIME: 1m
+    deploy:
+      restart_policy:
+        condition: none
+      mode: global
+      placement:
+        constraints: [node.role == manager]
+
+
+networks:
+  backend:
+    name: backend
+    external: true
+
+
